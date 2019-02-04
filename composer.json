@@ -1,0 +1,30 @@
+{
+  "name": "webarchitect609/bitrix-exception-logger",
+  "description": "PSR-3 logger exception handling adapter for Bitrix.",
+  "keywords": [
+    "bitrix",
+    "exception",
+    "logger",
+    "log"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sergey Gripinskiy",
+      "email": "web-architect@mail.ru"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "psr/log": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "WebArch\\BitrixExceptionLogger\\": "src/main"
+    }
+  },
+  "suggest": {
+    "monolog/monolog": "Allows more advanced logging of the application flow"
+  }
+}
