@@ -46,12 +46,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/vendor/autoload.p
                         'log'                        => [
                             'class_name' => \WebArch\BitrixExceptionLogger\ExceptionLogger::class,
                             'settings'   => [
+                                
+                                /**
+                                 * Логгер типа \Psr\Log\LoggerInterface. Обязательная опция. 
+                                 */
                                 'logger' => new \Monolog\Logger(
                                                 'BX_EXPN',
                                                 new \Monolog\Handler\StreamHandler(
                                                     '/var/log/www_exception.log', \Psr\Log\LogLevel::INFO
                                                 )
                                             ),
+                                            
+                                /**
+                                 * Битриксовые типы сообщений, которые будут записываться в лог. Необязательная опция.
+                                 * (по умолчанию пишутся все типы, кроме \Bitrix\Main\Diag\ExceptionHandlerLog::LOW_PRIORITY_ERROR ) 
+                                 */
                                 'types' => [
                                                \Bitrix\Main\Diag\ExceptionHandlerLog::UNCAUGHT_EXCEPTION,
                                                \Bitrix\Main\Diag\ExceptionHandlerLog::IGNORED_ERROR,
