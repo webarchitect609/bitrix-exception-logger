@@ -5,13 +5,14 @@ namespace WebArch\BitrixExceptionLogger;
 use Bitrix\Main\Diag\ExceptionHandlerLog;
 use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Throwable;
+use WebArch\LogTools\Traits\LogExceptionTrait;
 
 class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterface
 {
-    use LoggerAwareTrait;
+    use LogExceptionTrait;
 
     const OPTION_LOGGER = 'logger';
 
@@ -97,16 +98,10 @@ class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterfac
             return;
         }
 
-        $this->logger->critical(
-            sprintf(
-                "%s [%s] %s (%s)",
-                static::logTypeToString($logType),
-                get_class($exception),
-                $exception->getMessage(),
-                $exception->getCode()
-            ),
-            ['stackTrace' => $exception->getTraceAsString()]
+        $this->logException(
+            $exception,
+            LogLevel::CRITICAL,
+            ['logType' => static::logTypeToString($logType)]
         );
     }
-
 }
