@@ -14,33 +14,29 @@ class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterfac
 {
     use LogExceptionTrait;
 
-    const OPTION_LOGGER = 'logger';
+    protected const OPTION_LOGGER = 'logger';
 
-    const OPTION_TYPES = 'types';
-
-    private $logTypeFlags;
+    protected const OPTION_TYPES = 'types';
 
     /**
-     * ExceptionLogger constructor.
+     * @var array<int, bool>
+     *
+     * По-умолчанию логируется всё, кроме LOW_PRIORITY_ERROR.
+     * Этот тип ошибки засоряет логи и появляется не только часто,
+     * но и происходит от ошибок в коде ядра Битрикс.
      */
-    public function __construct()
-    {
-        /**
-         * По-умолчанию логируется всё, кроме LOW_PRIORITY_ERROR.
-         * Этот тип ошибки засоряет логи и появляется не только часто,
-         * но и происходит от ошибок в коде ядра Битрикс.
-         */
-        $this->logTypeFlags = [
-            self::UNCAUGHT_EXCEPTION => true,
-            self::CAUGHT_EXCEPTION   => true,
-            self::ASSERTION          => true,
-            self::FATAL              => true,
-        ];
-    }
+    private array $logTypeFlags = [
+        self::UNCAUGHT_EXCEPTION => true,
+        self::CAUGHT_EXCEPTION   => true,
+        self::ASSERTION          => true,
+        self::FATAL              => true,
+    ];
 
     /**
      * @param array $options
-     */
+     *
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     * */
     public function initialize(array $options)
     {
         $this->initLogger($options);
@@ -50,7 +46,7 @@ class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterfac
     /**
      * @param array $options
      */
-    private function initLogger(array $options)
+    private function initLogger(array $options): void
     {
         if (
             !array_key_exists(self::OPTION_LOGGER, $options)
@@ -71,7 +67,7 @@ class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterfac
     /**
      * @param array $options
      */
-    private function initTypes($options)
+    private function initTypes(array $options): void
     {
         if (!array_key_exists(self::OPTION_TYPES, $options) || !is_array($options[self::OPTION_TYPES])) {
             return;
@@ -87,7 +83,9 @@ class ExceptionLogger extends ExceptionHandlerLog implements LoggerAwareInterfac
 
     /**
      * @param Throwable $exception
-     * @param int $logType
+     * @param int       $logType
+     *
+     * @noinspection ReturnTypeCanBeDeclaredInspection
      */
     public function write($exception, $logType)
     {
